@@ -1,19 +1,16 @@
 import { Routes, Route, Navigate, NavLink, Outlet } from "react-router-dom";
-import {
-  Bell,
-  ClipboardList,
-  Zap,
-  Smile,
-} from "lucide-react";
+import { Bell, ClipboardList, Zap, Smile, BarChart3 } from "lucide-react";
 
 import TaskManagement from "./modules/tasks/TaskManagement";
 import MoodPage from "./modules/mood/MoodPage";
 import RemindersPage from "./modules/reminders/index";
+import Analytics from "./modules/analytics/Analytics";
 
 const NAV_ITEMS = [
   { to: "/tasks", label: "Tasks", Icon: ClipboardList },
   { to: "/reminders", label: "Reminders", Icon: Bell },
   { to: "/mood", label: "Mood Tracker", Icon: Smile },
+  { to: "/analytics", label: "Analytics", Icon: BarChart3 },
 ];
 
 function Layout() {
@@ -26,7 +23,11 @@ function Layout() {
             LifeSync
           </span>
 
-          <div className="flex items-center gap-1">
+          <div
+            className="flex items-center gap-1"
+            role="navigation"
+            aria-label="Module navigation"
+          >
             {NAV_ITEMS.map(({ to, label, Icon }) => (
               <NavLink
                 key={to}
@@ -60,6 +61,8 @@ function App() {
         <Route path="/tasks" element={<TaskManagement />} />
         <Route path="/reminders" element={<RemindersPage />} />
         <Route path="/mood" element={<MoodPage />} />
+        <Route path="/dashboard" element={<Navigate to="/analytics" replace />} />
+        <Route path="/analytics" element={<Analytics />} />
       </Route>
     </Routes>
   );
