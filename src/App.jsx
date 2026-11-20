@@ -20,6 +20,7 @@ import {
   Target,
   Menu,
   X,
+  BookOpen,
   LogOut,
   User,
 } from "lucide-react";
