@@ -20,9 +20,11 @@ import {
   Menu,
   X,
   CalendarDays,
+  BookOpen,
 } from "lucide-react";
 
 import TaskManagement from "./modules/tasks/TaskManagement";
+import Journal from "./modules/journal/Journal";
 import GoalManagement from "./modules/goals/GoalManagement";
 import MoodPage from "./modules/mood/MoodPage";
 import RemindersPage from "./modules/reminders/index";
@@ -35,6 +37,7 @@ import "./App.css";
 const NAV_ITEMS = [
   { to: "/tasks", label: "Tasks", Icon: ClipboardList },
   { to: "/calendar", label: "Calendar", Icon: CalendarDays },
+  { to: "/journal", label: "Journal", Icon: BookOpen },
   { to: "/goals", label: "Goals", Icon: Target },
   { to: "/reminders", label: "Reminders", Icon: Bell },
   { to: "/mood", label: "Mood Tracker", Icon: Smile },
@@ -159,7 +162,6 @@ function Layout() {
             <p className="font-semibold text-slate-700">
               Active Module
             </p>
-
             <p className="mt-0.5 font-medium text-indigo-600">
               {currentNav?.label || "Overview"}
             </p>
@@ -168,7 +170,7 @@ function Layout() {
       </aside>
 
       {/* Main Content Area */}
-      <main className="main-content flex-1 min-w-0 overflow-y-auto">
+      <main className="main-content min-w-0 flex-1 overflow-y-auto">
         <Outlet />
       </main>
     </div>
@@ -182,15 +184,11 @@ function App() {
         <Route path="/" element={<Navigate to="/tasks" replace />} />
 
         <Route path="/tasks" element={<TaskManagement />} />
-
         <Route path="/calendar" element={<Calendar />} />
-
+        <Route path="/journal" element={<Journal />} />
         <Route path="/goals" element={<GoalManagement />} />
-
         <Route path="/reminders" element={<RemindersPage />} />
-
         <Route path="/mood" element={<MoodPage />} />
-
         <Route path="/habits" element={<HabitTracker />} />
 
         <Route
@@ -205,4 +203,3 @@ function App() {
 }
 
 export default App;
-
