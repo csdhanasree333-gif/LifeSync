@@ -1,32 +1,14 @@
 @import "tailwindcss";
 
-/* Global Reset & Base Layout */
-*,
-*::before,
-*::after {
+/* Global Styles */
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html,
-body,
-#root {
-  width: 100%;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-  max-width: none;
-}
-
 body {
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  font-family: Inter, Arial, sans-serif;
   background-color: #f8fafc;
   color: #1e293b;
-  overflow-x: hidden;
-}
-
-#root {
-  display: flex;
-  flex-direction: column;
 }
