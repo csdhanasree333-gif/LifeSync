@@ -1,24 +1,19 @@
 
-import {
-  BrowserRouter,
-  NavLink,
-  Outlet,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
-
-import { Bell, ClipboardList, Zap, BarChart3 } from "lucide-react";
+import { BrowserRouter, NavLink, Outlet, Route, Routes, Navigate } from "react-router-dom";
+import { Bell, ClipboardList, Zap, CheckCircle2, BarChart3 } from "lucide-react";
 
 import TaskManagement from "./modules/tasks/TaskManagement";
 import RemindersPage from "./modules/reminders/index";
+import HabitTracker from "./modules/habits/HabitTracker";
 import Analytics from "./modules/analytics/Analytics";
 
 const NAV_ITEMS = [
   { to: "/tasks", label: "Tasks", Icon: ClipboardList },
   { to: "/reminders", label: "Reminders", Icon: Bell },
+  { to: "/habits", label: "Habits", Icon: CheckCircle2 },
   { to: "/analytics", label: "Analytics", Icon: BarChart3 },
 ];
+
 
 function Layout() {
   return (
@@ -65,12 +60,15 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<Navigate to="/tasks" replace />} />
-          <Route path="/tasks" element={<TaskManagement />} />
-          <Route path="/reminders" element={<RemindersPage />} />
-          <Route path="/dashboard" element={<Navigate to="/analytics" replace />} />
-          <Route path="/analytics" element={<Analytics />} />
-        </Route>
+  
+<Route path="/" element={<Navigate to="/tasks" replace />} />
+<Route path="/tasks" element={<TaskManagement />} />
+<Route path="/reminders" element={<RemindersPage />} />
+<Route path="/habits" element={<HabitTracker />} />
+<Route path="/dashboard" element={<Navigate to="/analytics" replace />} />
+<Route path="/analytics" element={<Analytics />} />
+</Route>
+
       </Routes>
     </BrowserRouter>
   );
