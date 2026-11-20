@@ -1,3 +1,12 @@
+<<<<<<< HEAD
+# Build output
+dist/
+
+# Dependencies
+node_modules/
+
+# Environment files
+=======
 
 # Logs
 logs
@@ -16,6 +25,7 @@ dist/
 dist-ssr/
 
 # Local environment files
+>>>>>>> origin/main
 .env
 .env.local
 .env.*.local
@@ -34,3 +44,10 @@ dist-ssr/
 # OS files
 .DS_Store
 Thumbs.db
+<<<<<<< HEAD
+
+# Logs
+*.log
+npm-debug.log*
+=======
+>>>>>>> origin/main

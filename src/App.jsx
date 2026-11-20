@@ -1,8 +1,15 @@
-
-import { BrowserRouter, NavLink, Outlet, Route, Routes, Navigate } from "react-router-dom";
-import { Bell, ClipboardList, Zap, CheckCircle2, BarChart3 } from "lucide-react";
+import { Routes, Route, Navigate, NavLink, Outlet } from "react-router-dom";
+import {
+  Bell,
+  ClipboardList,
+  Zap,
+  Smile,
+  BarChart3,
+  CheckCircle2,
+} from "lucide-react";
 
 import TaskManagement from "./modules/tasks/TaskManagement";
+import MoodPage from "./modules/mood/MoodPage";
 import RemindersPage from "./modules/reminders/index";
 import HabitTracker from "./modules/habits/HabitTracker";
 import Analytics from "./modules/analytics/Analytics";
@@ -10,10 +17,10 @@ import Analytics from "./modules/analytics/Analytics";
 const NAV_ITEMS = [
   { to: "/tasks", label: "Tasks", Icon: ClipboardList },
   { to: "/reminders", label: "Reminders", Icon: Bell },
+  { to: "/mood", label: "Mood Tracker", Icon: Smile },
   { to: "/habits", label: "Habits", Icon: CheckCircle2 },
   { to: "/analytics", label: "Analytics", Icon: BarChart3 },
 ];
-
 
 function Layout() {
   return (
@@ -43,7 +50,7 @@ function Layout() {
                 }
               >
                 <Icon size={16} />
-                <span className="hidden sm:inline">{label}</span>
+                <span>{label}</span>
               </NavLink>
             ))}
           </div>
@@ -57,20 +64,17 @@ function Layout() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<Layout />}>
-  
-<Route path="/" element={<Navigate to="/tasks" replace />} />
-<Route path="/tasks" element={<TaskManagement />} />
-<Route path="/reminders" element={<RemindersPage />} />
-<Route path="/habits" element={<HabitTracker />} />
-<Route path="/dashboard" element={<Navigate to="/analytics" replace />} />
-<Route path="/analytics" element={<Analytics />} />
-</Route>
-
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path="/" element={<Navigate to="/tasks" replace />} />
+        <Route path="/tasks" element={<TaskManagement />} />
+        <Route path="/reminders" element={<RemindersPage />} />
+        <Route path="/mood" element={<MoodPage />} />
+        <Route path="/habits" element={<HabitTracker />} />
+        <Route path="/dashboard" element={<Navigate to="/analytics" replace />} />
+        <Route path="/analytics" element={<Analytics />} />
+      </Route>
+    </Routes>
   );
 }
 
