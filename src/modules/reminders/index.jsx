@@ -118,7 +118,7 @@ export default function RemindersPage() {
 
   return (
     <main className="min-h-screen bg-slate-50 px-4 py-7 text-slate-800 sm:px-8 sm:py-10">
-      <div className="mx-auto max-w-4xl">
+      <div className="mx-auto max-w-7xl">
         {/* ── Page header ── */}
         <header className="mb-8 flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
           <div>

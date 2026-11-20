@@ -26,7 +26,7 @@ export default function LandingNav({ isLoggedIn }) {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+      className={`absolute inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled
           ? "bg-white/90 shadow-sm backdrop-blur-md border-b border-slate-200/60"
           : "bg-transparent"

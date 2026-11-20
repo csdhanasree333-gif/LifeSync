@@ -156,7 +156,7 @@ function MockupCard() {
 /* ── Hero Section ──────────────────────────────────────────────────────── */
 export default function HeroSection({ isLoggedIn }) {
   return (
-    <section className="relative overflow-hidden pt-28 pb-20 sm:pt-36 sm:pb-28">
+    <section className="relative overflow-hidden pt-32 pb-20 sm:pt-40 sm:pb-28">
       {/* Background blobs */}
       <div
         aria-hidden="true"
