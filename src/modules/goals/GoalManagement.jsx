@@ -362,40 +362,9 @@ export default function GoalManagement() {
   return (
     <main className="min-h-screen bg-slate-50 px-4 py-7 text-slate-800 sm:px-8 sm:py-10">
       <div className="mx-auto max-w-7xl">
-        {/* Navigation & Brand Header */}
-        <nav aria-label="LifeSync Modules" className="mb-6 flex items-center justify-between border-b border-slate-200/80 pb-4">
-          <div className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-sm">
-              <Sparkles size={18} />
-            </span>
-            <span className="text-lg font-bold tracking-tight text-slate-900">LifeSync</span>
-          </div>
-
-          <div className="flex items-center gap-1.5 rounded-xl bg-slate-200/70 p-1 text-sm font-semibold text-slate-600">
-            <Link
-              to="/tasks"
-              className="flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 transition hover:text-slate-900"
-            >
-              <ListTodo size={16} />
-              Tasks
-            </Link>
-            <Link
-              to="/goals"
-              className="flex items-center gap-1.5 rounded-lg bg-white px-3.5 py-1.5 text-indigo-600 shadow-xs"
-            >
-              <Target size={16} />
-              Goals
-            </Link>
-          </div>
-        </nav>
-
         {/* Page Header */}
         <header className="mb-8 flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
           <div>
-            <p className="mb-2 flex items-center gap-2 text-sm font-semibold text-indigo-600">
-              <Target size={17} />
-              Module 1 · LifeSync
-            </p>
             <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
               Goal Management
             </h1>
