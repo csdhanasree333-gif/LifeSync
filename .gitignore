@@ -1,4 +1,20 @@
-node_modules/
+# Build output – never commit this
 dist/
+
+# Dependencies – install with npm install
+node_modules/
+
+# Local env files
 .env
 .env.local
+.env.*.local
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
