@@ -20,12 +20,14 @@ import {
   Target,
   Menu,
   X,
+  CalendarDays,
   BookOpen,
   LogOut,
   User,
 } from "lucide-react";
 
 import TaskManagement from "./modules/tasks/TaskManagement";
+import Calendar from "./modules/Calendar/Calendar";
 import Journal from "./modules/journal/Journal";
 import GoalManagement from "./modules/goals/GoalManagement";
 import MoodPage from "./modules/mood/MoodPage";
@@ -41,12 +43,13 @@ import "./App.css";
 
 const NAV_ITEMS = [
   { to: "/tasks", label: "Tasks", Icon: ClipboardList },
+  { to: "/calendar", label: "Calendar", Icon: CalendarDays },
+  { to: "/journal", label: "Journal", Icon: BookOpen },
   { to: "/goals", label: "Goals", Icon: Target },
   { to: "/reminders", label: "Reminders", Icon: Bell },
   { to: "/mood", label: "Mood Tracker", Icon: Smile },
   { to: "/habits", label: "Habits", Icon: CheckCircle2 },
   { to: "/analytics", label: "Analytics", Icon: BarChart3 },
-  { to: "/journal", label: "Journal", Icon: BookOpen },
 ];
 
 function Layout() {
@@ -83,7 +86,11 @@ function Layout() {
           type="button"
           onClick={() => setMobileMenuOpen((prev) => !prev)}
           className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600 transition hover:bg-slate-100"
-          aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-label={
+            mobileMenuOpen
+              ? "Close navigation menu"
+              : "Open navigation menu"
+          }
           aria-expanded={mobileMenuOpen}
         >
           {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -185,9 +192,12 @@ function Layout() {
           ))}
         </nav>
 
+        {/* Active Module */}
         <div className="border-t border-slate-100 p-4">
           <div className="rounded-xl bg-slate-50 p-3 text-xs text-slate-500">
-            <p className="font-semibold text-slate-700">Active Module</p>
+            <p className="font-semibold text-slate-700">
+              Active Module
+            </p>
             <p className="mt-0.5 font-medium text-indigo-600">
               {currentNav?.label || "Overview"}
             </p>
@@ -203,7 +213,6 @@ function Layout() {
   );
 }
 
-
 function App() {
   return (
     <Routes>
@@ -215,6 +224,7 @@ function App() {
       {/* Application Modules */}
       <Route element={<Layout />}>
         <Route path="/tasks" element={<TaskManagement />} />
+        <Route path="/calendar" element={<Calendar />} />
         <Route path="/journal" element={<Journal />} />
         <Route path="/goals" element={<GoalManagement />} />
         <Route path="/reminders" element={<RemindersPage />} />
