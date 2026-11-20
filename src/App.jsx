@@ -6,6 +6,7 @@ import {
   Navigate,
   NavLink,
   Outlet,
+  useNavigate,
   useLocation,
 } from "react-router-dom";
 
@@ -19,7 +20,8 @@ import {
   Target,
   Menu,
   X,
-  BookOpen,
+  LogOut,
+  User,
 } from "lucide-react";
 
 import TaskManagement from "./modules/tasks/TaskManagement";
@@ -29,6 +31,11 @@ import MoodPage from "./modules/mood/MoodPage";
 import RemindersPage from "./modules/reminders/index";
 import HabitTracker from "./modules/habits/HabitTracker";
 import Analytics from "./modules/analytics/Analytics";
+
+import LandingPage from "./pages/landing/LandingPage";
+import AuthPage from "./pages/auth/AuthPage";
+import { readSession, clearSession } from "./pages/auth/authUtils";
+
 import "./App.css";
 
 const NAV_ITEMS = [
@@ -43,14 +50,24 @@ const NAV_ITEMS = [
 
 function Layout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
   const location = useLocation();
+  const session = readSession();
 
   const currentNav = NAV_ITEMS.find((item) =>
     location.pathname.startsWith(item.to)
   );
 
+  function handleLogout() {
+    clearSession();
+    setMobileMenuOpen(false);
+    navigate("/", { replace: true });
+  }
+
   return (
     <div className="app-container flex min-h-screen w-full flex-col bg-slate-50 text-slate-800 md:flex-row">
+
+      {/* Mobile Top Header */}
       <header className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b border-slate-200 bg-white/95 px-4 backdrop-blur-sm md:hidden">
         <div className="flex items-center gap-2.5">
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-xs">
@@ -64,7 +81,7 @@ function Layout() {
         <button
           type="button"
           onClick={() => setMobileMenuOpen((prev) => !prev)}
-          className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600 transition hover:bg-slate-100"
           aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
           aria-expanded={mobileMenuOpen}
         >
@@ -72,6 +89,7 @@ function Layout() {
         </button>
       </header>
 
+      {/* Mobile Navigation Drawer */}
       {mobileMenuOpen && (
         <div
           className="fixed inset-0 top-16 z-40 bg-slate-950/40 backdrop-blur-xs md:hidden"
@@ -103,21 +121,47 @@ function Layout() {
         </div>
       )}
 
+      {/* Desktop Sidebar */}
       <aside className="sidebar sticky top-0 hidden h-screen flex-col border-r border-slate-200 bg-white md:flex">
-        <div className="flex h-16 items-center gap-2.5 border-b border-slate-100 px-6">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-xs">
-            <Zap size={18} className="fill-white" />
-          </span>
-          <div>
-            <h2 className="text-base font-bold tracking-tight text-slate-900">
-              LifeSync
-            </h2>
-            <p className="text-[11px] font-medium text-slate-400">
-              Personal Management
-            </p>
+
+        {/* Brand Header */}
+        <div className="flex h-16 items-center justify-between border-b border-slate-100 px-4">
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-xs">
+              <Zap size={18} className="fill-white" />
+            </span>
+            <div>
+              <h2 className="text-base font-bold tracking-tight text-slate-900">
+                LifeSync
+              </h2>
+              <p className="text-[11px] font-medium text-slate-400">
+                Personal Management
+              </p>
+            </div>
           </div>
         </div>
 
+        {/* User and Logout */}
+        <div className="flex items-center justify-between gap-2 border-b border-slate-100 p-4">
+          {session && (
+            <span className="flex min-w-0 items-center gap-1.5 rounded-lg bg-slate-100 px-2 py-1.5 text-xs font-semibold text-slate-600">
+              <User size={13} />
+              <span className="truncate">{session.name}</span>
+            </span>
+          )}
+
+          <button
+            type="button"
+            onClick={handleLogout}
+            title="Log out"
+            className="inline-flex min-h-9 items-center gap-1.5 rounded-lg px-2 py-2 text-sm font-semibold text-slate-500 transition hover:bg-rose-50 hover:text-rose-600"
+          >
+            <LogOut size={16} />
+            <span>Logout</span>
+          </button>
+        </div>
+
+        {/* Navigation Links */}
         <nav
           className="flex-1 space-y-1.5 overflow-y-auto p-4"
           aria-label="Sidebar navigation"
@@ -150,6 +194,7 @@ function Layout() {
         </div>
       </aside>
 
+      {/* Main Content */}
       <main className="main-content min-w-0 flex-1 overflow-y-auto">
         <Outlet />
       </main>
@@ -157,20 +202,29 @@ function Layout() {
   );
 }
 
+
 function App() {
   return (
     <Routes>
+      {/* Public Routes */}
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/auth" element={<AuthPage />} />
+      <Route path="/login" element={<AuthPage />} />
+
+      {/* Application Modules */}
       <Route element={<Layout />}>
-        <Route path="/" element={<Navigate to="/tasks" replace />} />
         <Route path="/tasks" element={<TaskManagement />} />
         <Route path="/journal" element={<Journal />} />
         <Route path="/goals" element={<GoalManagement />} />
         <Route path="/reminders" element={<RemindersPage />} />
         <Route path="/mood" element={<MoodPage />} />
         <Route path="/habits" element={<HabitTracker />} />
-        <Route path="/dashboard" element={<Navigate to="/analytics" replace />} />
+        <Route path="/dashboard" element={<Analytics />} />
         <Route path="/analytics" element={<Analytics />} />
       </Route>
+
+      {/* Unknown Routes */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

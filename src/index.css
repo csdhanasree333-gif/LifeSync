@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
-/* Global Styles */
-* {
-  margin: 0;
-  padding: 0;
+/* Global Reset & Base Layout */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
