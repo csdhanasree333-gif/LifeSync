@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 
 import TaskManagement from "./modules/tasks/TaskManagement";
+import Journal from "./modules/journal/Journal";
 import GoalManagement from "./modules/goals/GoalManagement";
 import MoodPage from "./modules/mood/MoodPage";
 import RemindersPage from "./modules/reminders/index";
@@ -44,6 +45,7 @@ const NAV_ITEMS = [
   { to: "/mood", label: "Mood Tracker", Icon: Smile },
   { to: "/habits", label: "Habits", Icon: CheckCircle2 },
   { to: "/analytics", label: "Analytics", Icon: BarChart3 },
+  { to: "/journal", label: "Journal", Icon: BookOpen },
 ];
 
 function Layout() {
@@ -182,7 +184,6 @@ function Layout() {
           ))}
         </nav>
 
-        {/* Sidebar Footer */}
         <div className="border-t border-slate-100 p-4">
           <div className="rounded-xl bg-slate-50 p-3 text-xs text-slate-500">
             <p className="font-semibold text-slate-700">Active Module</p>
@@ -213,6 +214,7 @@ function App() {
       {/* Application Modules */}
       <Route element={<Layout />}>
         <Route path="/tasks" element={<TaskManagement />} />
+        <Route path="/journal" element={<Journal />} />
         <Route path="/goals" element={<GoalManagement />} />
         <Route path="/reminders" element={<RemindersPage />} />
         <Route path="/mood" element={<MoodPage />} />
