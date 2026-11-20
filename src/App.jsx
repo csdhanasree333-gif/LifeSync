@@ -6,6 +6,7 @@ import {
   Navigate,
   NavLink,
   Outlet,
+  useNavigate,
   useLocation,
 } from "react-router-dom";
 
@@ -21,16 +22,22 @@ import {
   X,
   CalendarDays,
   BookOpen,
+  LogOut,
+  User,
 } from "lucide-react";
 
 import TaskManagement from "./modules/tasks/TaskManagement";
+import Calendar from "./modules/Calendar/Calendar";
 import Journal from "./modules/journal/Journal";
 import GoalManagement from "./modules/goals/GoalManagement";
 import MoodPage from "./modules/mood/MoodPage";
 import RemindersPage from "./modules/reminders/index";
 import HabitTracker from "./modules/habits/HabitTracker";
 import Analytics from "./modules/analytics/Analytics";
-import Calendar from "./modules/Calendar/Calendar";
+
+import LandingPage from "./pages/landing/LandingPage";
+import AuthPage from "./pages/auth/AuthPage";
+import { readSession, clearSession } from "./pages/auth/authUtils";
 
 import "./App.css";
 
@@ -47,11 +54,19 @@ const NAV_ITEMS = [
 
 function Layout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
   const location = useLocation();
+  const session = readSession();
 
   const currentNav = NAV_ITEMS.find((item) =>
     location.pathname.startsWith(item.to)
   );
+
+  function handleLogout() {
+    clearSession();
+    setMobileMenuOpen(false);
+    navigate("/", { replace: true });
+  }
 
   return (
     <div className="app-container flex min-h-screen w-full flex-col bg-slate-50 text-slate-800 md:flex-row">
@@ -70,7 +85,7 @@ function Layout() {
         <button
           type="button"
           onClick={() => setMobileMenuOpen((prev) => !prev)}
-          className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600 transition hover:bg-slate-100"
           aria-label={
             mobileMenuOpen
               ? "Close navigation menu"
@@ -114,23 +129,44 @@ function Layout() {
         </div>
       )}
 
-      {/* Desktop & Tablet Sidebar */}
+      {/* Desktop Sidebar */}
       <aside className="sidebar sticky top-0 hidden h-screen flex-col border-r border-slate-200 bg-white md:flex">
 
         {/* Brand Header */}
-        <div className="flex h-16 items-center gap-2.5 border-b border-slate-100 px-6">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-xs">
-            <Zap size={18} className="fill-white" />
-          </span>
-
-          <div>
-            <h2 className="text-base font-bold tracking-tight text-slate-900">
-              LifeSync
-            </h2>
-            <p className="text-[11px] font-medium text-slate-400">
-              Personal Management
-            </p>
+        <div className="flex h-16 items-center justify-between border-b border-slate-100 px-4">
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-xs">
+              <Zap size={18} className="fill-white" />
+            </span>
+            <div>
+              <h2 className="text-base font-bold tracking-tight text-slate-900">
+                LifeSync
+              </h2>
+              <p className="text-[11px] font-medium text-slate-400">
+                Personal Management
+              </p>
+            </div>
           </div>
+        </div>
+
+        {/* User and Logout */}
+        <div className="flex items-center justify-between gap-2 border-b border-slate-100 p-4">
+          {session && (
+            <span className="flex min-w-0 items-center gap-1.5 rounded-lg bg-slate-100 px-2 py-1.5 text-xs font-semibold text-slate-600">
+              <User size={13} />
+              <span className="truncate">{session.name}</span>
+            </span>
+          )}
+
+          <button
+            type="button"
+            onClick={handleLogout}
+            title="Log out"
+            className="inline-flex min-h-9 items-center gap-1.5 rounded-lg px-2 py-2 text-sm font-semibold text-slate-500 transition hover:bg-rose-50 hover:text-rose-600"
+          >
+            <LogOut size={16} />
+            <span>Logout</span>
+          </button>
         </div>
 
         {/* Navigation Links */}
@@ -156,7 +192,7 @@ function Layout() {
           ))}
         </nav>
 
-        {/* Sidebar Footer */}
+        {/* Active Module */}
         <div className="border-t border-slate-100 p-4">
           <div className="rounded-xl bg-slate-50 p-3 text-xs text-slate-500">
             <p className="font-semibold text-slate-700">
@@ -169,7 +205,7 @@ function Layout() {
         </div>
       </aside>
 
-      {/* Main Content Area */}
+      {/* Main Content */}
       <main className="main-content min-w-0 flex-1 overflow-y-auto">
         <Outlet />
       </main>
@@ -180,9 +216,13 @@ function Layout() {
 function App() {
   return (
     <Routes>
-      <Route element={<Layout />}>
-        <Route path="/" element={<Navigate to="/tasks" replace />} />
+      {/* Public Routes */}
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/auth" element={<AuthPage />} />
+      <Route path="/login" element={<AuthPage />} />
 
+      {/* Application Modules */}
+      <Route element={<Layout />}>
         <Route path="/tasks" element={<TaskManagement />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/journal" element={<Journal />} />
@@ -190,14 +230,12 @@ function App() {
         <Route path="/reminders" element={<RemindersPage />} />
         <Route path="/mood" element={<MoodPage />} />
         <Route path="/habits" element={<HabitTracker />} />
-
-        <Route
-          path="/dashboard"
-          element={<Navigate to="/analytics" replace />}
-        />
-
+        <Route path="/dashboard" element={<Analytics />} />
         <Route path="/analytics" element={<Analytics />} />
       </Route>
+
+      {/* Unknown Routes */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
