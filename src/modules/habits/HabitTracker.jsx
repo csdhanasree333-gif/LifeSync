@@ -15,6 +15,7 @@ import {
   createId,
   todayStr,
   calcStreaks,
+  doneThisWeek,
 } from "./habitUtils";
 import HabitCard from "./HabitCard";
 import HabitFormModal from "./HabitFormModal";
@@ -41,8 +42,11 @@ export default function HabitTracker() {
   // ── Derived stats ──────────────────────────────────────────────────────────
   const today = todayStr();
   const totalHabits = habits.length;
+  // Daily: completed today; Weekly: completed at least once this ISO week
   const completedToday = habits.filter((h) =>
-    h.completedDates.includes(today)
+    h.frequency === "weekly"
+      ? doneThisWeek(h.completedDates)
+      : h.completedDates.includes(today)
   ).length;
   const longestStreak = habits.reduce(
     (max, h) => Math.max(max, h.bestStreak),

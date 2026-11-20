@@ -114,7 +114,7 @@ function calcDailyStreaks(dateSet) {
   return { currentStreak: current, bestStreak: Math.max(best, current) };
 }
 
-function getISOWeekKey(dateStr) {
+export function getISOWeekKey(dateStr) {
   const d = new Date(dateStr + "T00:00:00");
   // ISO week: set to Thursday of the same week
   const day = d.getDay() || 7; // 1=Mon … 7=Sun
@@ -122,6 +122,33 @@ function getISOWeekKey(dateStr) {
   const jan4 = new Date(d.getFullYear(), 0, 4);
   const week = Math.ceil(((d - jan4) / 86_400_000 + jan4.getDay() + 1) / 7);
   return `${d.getFullYear()}-W${String(week).padStart(2, "0")}`;
+}
+
+/**
+ * Returns true if any date in completedDates falls in the current ISO week.
+ */
+export function doneThisWeek(completedDates) {
+  const thisWeek = getISOWeekKey(todayStr());
+  return completedDates.some((d) => getISOWeekKey(d) === thisWeek);
+}
+
+/**
+ * Returns an array of the last N ISO week keys (oldest first),
+ * each as { key: 'YYYY-Wnn', label: 'Wn' } where label is relative
+ * (W1 = oldest, W8 = current week).
+ */
+export function lastNWeeks(n) {
+  const result = [];
+  const today = new Date();
+  for (let i = n - 1; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i * 7);
+    result.push({
+      key:   getISOWeekKey(toDateStr(d)),
+      label: `W${n - i}`,
+    });
+  }
+  return result;
 }
 
 function calcWeeklyStreaks(completedDates) {

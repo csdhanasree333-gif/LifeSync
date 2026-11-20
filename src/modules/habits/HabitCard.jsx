@@ -10,12 +10,16 @@ import {
   CalendarDays,
 } from "lucide-react";
 import CompletionGrid from "./CompletionGrid";
-import { todayStr } from "./habitUtils";
+import { todayStr, doneThisWeek } from "./habitUtils";
 
 export default function HabitCard({ habit, onToggleToday, onEdit, onDelete }) {
   const [gridDays, setGridDays] = useState(7);
   const today = todayStr();
-  const doneToday = habit.completedDates.includes(today);
+  const isWeekly   = habit.frequency === "weekly";
+  // daily: check today; weekly: check any date in the current ISO week
+  const doneToday  = isWeekly
+    ? doneThisWeek(habit.completedDates)
+    : habit.completedDates.includes(today);
 
   const freqColor =
     habit.frequency === "daily"
@@ -63,19 +67,19 @@ export default function HabitCard({ habit, onToggleToday, onEdit, onDelete }) {
             {/* Current streak */}
             <span className="inline-flex items-center gap-1 rounded-full bg-orange-50 px-2.5 py-0.5 text-xs font-semibold text-orange-600">
               <Flame size={11} />
-              {habit.currentStreak} day streak
+              {habit.currentStreak} {isWeekly ? "week" : "day"} streak
             </span>
 
             {/* Best streak */}
             <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-600">
               <Trophy size={11} />
-              Best: {habit.bestStreak}
+              Best: {habit.bestStreak} {isWeekly ? "wk" : "d"}
             </span>
 
-            {/* Done today badge */}
+            {/* Done badge */}
             {doneToday && (
               <span className="rounded-full bg-violet-50 px-2.5 py-0.5 text-xs font-semibold text-violet-700">
-                ✓ Done today
+                {isWeekly ? "✓ Done this week" : "✓ Done today"}
               </span>
             )}
           </div>
@@ -111,36 +115,42 @@ export default function HabitCard({ habit, onToggleToday, onEdit, onDelete }) {
             className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-violet-600 py-2.5 text-sm font-semibold text-white transition hover:bg-violet-700 active:scale-[0.98]"
           >
             <CheckCircle2 size={17} />
-            Mark Completed Today
+            {isWeekly ? "Mark Completed This Week" : "Mark Completed Today"}
           </button>
         </div>
       )}
 
       {/* Completion History */}
       <div className="border-t border-slate-100 px-4 pb-4 pt-3 sm:px-5">
-        {/* Toggle 7 / 30 days */}
+        {/* Toggle — daily: 7d / 30d | weekly: fixed 8-week view (no toggle needed) */}
         <div className="mb-1 flex items-center justify-between">
           <span className="text-xs font-semibold text-slate-500">
             Completion History
           </span>
-          <div className="flex overflow-hidden rounded-lg border border-slate-200 text-xs font-semibold">
-            {[7, 30].map((n) => (
-              <button
-                key={n}
-                type="button"
-                onClick={() => setGridDays(n)}
-                className={`px-2.5 py-1 transition ${
-                  gridDays === n
-                    ? "bg-violet-600 text-white"
-                    : "bg-white text-slate-500 hover:bg-slate-50"
-                }`}
-              >
-                {n}d
-              </button>
-            ))}
-          </div>
+          {!isWeekly && (
+            <div className="flex overflow-hidden rounded-lg border border-slate-200 text-xs font-semibold">
+              {[7, 30].map((n) => (
+                <button
+                  key={n}
+                  type="button"
+                  onClick={() => setGridDays(n)}
+                  className={`px-2.5 py-1 transition ${
+                    gridDays === n
+                      ? "bg-violet-600 text-white"
+                      : "bg-white text-slate-500 hover:bg-slate-50"
+                  }`}
+                >
+                  {n}d
+                </button>
+              ))}
+            </div>
+          )}
         </div>
-        <CompletionGrid completedDates={habit.completedDates} days={gridDays} />
+        <CompletionGrid
+          completedDates={habit.completedDates}
+          days={isWeekly ? 8 : gridDays}
+          frequency={habit.frequency}
+        />
       </div>
     </article>
   );
