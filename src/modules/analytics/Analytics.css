@@ -1,0 +1,43 @@
+
+.analytics-page {
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.kpi-icon {
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 13px;
+}
+
+.kpi-icon.blue {
+  color: #2563eb;
+  background: #eff6ff;
+}
+
+.kpi-icon.green {
+  color: #16a34a;
+  background: #f0fdf4;
+}
+
+.kpi-icon.purple {
+  color: #9333ea;
+  background: #faf5ff;
+}
+
+.kpi-icon.pink {
+  color: #db2777;
+  background: #fdf2f8;
+}
+
+.recharts-tooltip-wrapper {
+  outline: none;
+}
+
+@media (max-width: 640px) {
+  .analytics-page {
+    padding: 16px;
+  }
+}
