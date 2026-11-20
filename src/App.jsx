@@ -1,27 +1,40 @@
-import { BrowserRouter, NavLink, Outlet, Route, Routes, Navigate } from "react-router-dom";
-import { Bell, ClipboardList, Zap } from "lucide-react";
+
+import {
+  BrowserRouter,
+  NavLink,
+  Outlet,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+
+import { Bell, ClipboardList, Zap, BarChart3 } from "lucide-react";
+
 import TaskManagement from "./modules/tasks/TaskManagement";
 import RemindersPage from "./modules/reminders/index";
+import Analytics from "./modules/analytics/Analytics";
 
 const NAV_ITEMS = [
-  { to: "/tasks",     label: "Tasks",     Icon: ClipboardList },
-  { to: "/reminders", label: "Reminders", Icon: Bell          },
+  { to: "/tasks", label: "Tasks", Icon: ClipboardList },
+  { to: "/reminders", label: "Reminders", Icon: Bell },
+  { to: "/analytics", label: "Analytics", Icon: BarChart3 },
 ];
 
 function Layout() {
   return (
     <>
-      {/* ── Navbar ── */}
       <nav className="sticky top-0 z-40 border-b border-slate-200 bg-white/90 backdrop-blur-sm">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-8">
-          {/* Logo */}
           <span className="flex items-center gap-2 text-sm font-bold text-indigo-600">
             <Zap size={18} className="fill-indigo-600" />
             LifeSync
           </span>
 
-          {/* Module tabs */}
-          <div className="flex items-center gap-1" role="navigation" aria-label="Module navigation">
+          <div
+            className="flex items-center gap-1"
+            role="navigation"
+            aria-label="Module navigation"
+          >
             {NAV_ITEMS.map(({ to, label, Icon }) => (
               <NavLink
                 key={to}
@@ -42,7 +55,6 @@ function Layout() {
         </div>
       </nav>
 
-      {/* ── Page content ── */}
       <Outlet />
     </>
   );
@@ -54,8 +66,10 @@ function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Navigate to="/tasks" replace />} />
-          <Route path="/tasks"     element={<TaskManagement />} />
+          <Route path="/tasks" element={<TaskManagement />} />
           <Route path="/reminders" element={<RemindersPage />} />
+          <Route path="/dashboard" element={<Navigate to="/analytics" replace />} />
+          <Route path="/analytics" element={<Analytics />} />
         </Route>
       </Routes>
     </BrowserRouter>
